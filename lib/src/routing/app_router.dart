@@ -1,3 +1,4 @@
+import 'package:demo_ecommerce_shop/src/features/onboarding/data/onboarding_repository.dart';
 import 'package:demo_ecommerce_shop/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:demo_ecommerce_shop/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,15 @@ GoRouter goRouter(Ref ref) {
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (context, state) {
+      final onboardingRepository = ref.read(onboardingRepositoryProvider).requireValue;
+      final didCompleteOnboarding = onboardingRepository.isOnboardingComplete();
+      final path = state.uri.path;
+      if (!didCompleteOnboarding) {
+        if (path != '/onboarding') {
+          return '/onboarding';
+        }
+        return null;
+      }
       return null;
     },
     routes: [

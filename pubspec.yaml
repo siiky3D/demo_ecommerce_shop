@@ -20,6 +20,9 @@ dependencies:
   introduction_screen: ^3.1.14
   easy_localization: ^3.0.7+1
   intl: any
+  shared_preferences: ^2.5.1
+  firebase_core: ^3.11.0
+  firebase_auth: ^5.4.2
 
 dev_dependencies:
   flutter_test:
