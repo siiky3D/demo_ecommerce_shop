@@ -1,4 +1,8 @@
+import 'package:demo_ecommerce_shop/gen/assets.gen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -8,40 +12,31 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Splash Screen'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return IntroductionScreen(
+      pages: [
+        PageViewModel(
+          title: "welcome1".tr(),
+          body: "welcome1Instruction".tr(),
+          image: Lottie.asset(Assets.lotties.welcomScreenImage1),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        PageViewModel(
+          title: "welcome2".tr(),
+          body: "welcome2Instruction".tr(),
+          image: Lottie.asset(Assets.lotties.welcomScreenImage2),
+        ),
+        PageViewModel(
+          title: "welcome3".tr(),
+          body: "welcome3Instruction".tr(),
+          image: Lottie.asset(Assets.lotties.welcomScreenImage3),
+        ),
+      ],
+      onDone: () {},
+      showSkipButton: true,
+      skip: Text("skip".tr()),
+      next: Icon(Icons.arrow_forward),
+      done: Text("start".tr(), style: TextStyle(fontWeight: FontWeight.bold)),
     );
   }
 }
