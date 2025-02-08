@@ -34,7 +34,7 @@ class OnboardingScreen extends ConsumerWidget {
         ),
       ],
       onDone: state.isLoading
-          ? null
+          ? () {}
           : () async {
               await ref.read(onboardingControllerProvider.notifier).completeOnboarding();
               if (context.mounted) {
