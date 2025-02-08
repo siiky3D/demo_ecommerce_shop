@@ -1,5 +1,5 @@
-import 'package:demo_ecommerce_shop/src/common_widgets/primary_button.dart';
-import 'package:demo_ecommerce_shop/src/constants/app_sizes.dart';
+import 'package:demo_app/src/common_widgets/primary_button.dart';
+import 'package:demo_app/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

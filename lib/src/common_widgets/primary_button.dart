@@ -1,4 +1,4 @@
-import 'package:demo_ecommerce_shop/src/constants/app_sizes.dart';
+import 'package:demo_app/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 /// Primary button based on [ElevatedButton].
@@ -23,7 +23,10 @@ class PrimaryButton extends StatelessWidget {
             : Text(
                 text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(color: const Color.fromARGB(255, 255, 0, 0)),
               ),
       ),
     );

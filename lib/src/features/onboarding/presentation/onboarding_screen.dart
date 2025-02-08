@@ -1,19 +1,20 @@
-import 'package:demo_ecommerce_shop/gen/assets.gen.dart';
+import 'package:demo_app/gen/assets.gen.dart';
+import 'package:demo_app/src/features/onboarding/presentation/onboarding_controller.dart';
+import 'package:demo_app/src/routing/app_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(onboardingControllerProvider);
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  @override
-  Widget build(BuildContext context) {
     return IntroductionScreen(
       pages: [
         PageViewModel(
@@ -32,7 +33,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           image: Lottie.asset(Assets.lotties.welcomScreenImage3),
         ),
       ],
-      onDone: () {},
+      onDone: state.isLoading
+          ? null
+          : () async {
+              await ref.read(onboardingControllerProvider.notifier).completeOnboarding();
+              if (context.mounted) {
+                context.goNamed(AppRoute.signIn.name);
+              }
+            },
       showSkipButton: true,
       skip: Text("skip".tr()),
       next: Icon(Icons.arrow_forward),

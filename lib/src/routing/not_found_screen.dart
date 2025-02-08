@@ -1,4 +1,4 @@
-import 'package:demo_ecommerce_shop/src/common_widgets/empty_placeholder_widget.dart';
+import 'package:demo_app/src/common_widgets/empty_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
 /// Simple not found screen used for 404 errors (page not found on web)

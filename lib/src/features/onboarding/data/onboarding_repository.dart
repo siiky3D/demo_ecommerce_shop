@@ -4,6 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'onboarding_repository.g.dart';
 
+final sharedPreferencesProvider = FutureProvider<SharedPreferences>((ref) async {
+  return await SharedPreferences.getInstance();
+});
+
 class OnboardingRepository {
   OnboardingRepository(this.sharedPreferences);
   final SharedPreferences sharedPreferences;
