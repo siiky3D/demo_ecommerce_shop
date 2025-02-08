@@ -1,4 +1,6 @@
+import 'package:demo_app/src/constants/app_colors.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
+import 'package:demo_app/src/constants/text_styles.dart';
 import 'package:flutter/material.dart';
 
 /// Primary button based on [ElevatedButton].
@@ -16,17 +18,23 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: Sizes.p48,
-      child: ElevatedButton(
-        onPressed: onPressed,
+      child: InkWell(
+        onTap: onPressed,
         child: isLoading
             ? const CircularProgressIndicator()
-            : Text(
-                text,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: const Color.fromARGB(255, 255, 0, 0)),
+            : Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.05,
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                decoration: const BoxDecoration(
+                    color: AppColors.blue, borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Center(
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: KTextStyle.authButtonTextStyle,
+                  ),
+                ),
               ),
       ),
     );

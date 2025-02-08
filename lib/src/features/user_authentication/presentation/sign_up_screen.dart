@@ -4,7 +4,6 @@ import 'package:demo_app/src/common_widgets/custom_richtext.dart';
 import 'package:demo_app/src/common_widgets/primary_button.dart';
 import 'package:demo_app/src/constants/app_colors.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
-import 'package:demo_app/src/features/user_authentication/presentation/auth_providers.dart';
 import 'package:demo_app/src/features/user_authentication/presentation/widgets/custom_header.dart';
 import 'package:demo_app/src/routing/app_router.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,17 +11,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends ConsumerStatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SignInScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SignUpScreenState();
 }
 
-final _emailController = TextEditingController();
-final _passwordController = TextEditingController();
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  final _userName = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-class _SignInScreenState extends ConsumerState<SignInScreen> {
+  String get userName => _userName.text.trim();
+  String get email => _emailController.text.trim();
+  String get password => _passwordController.text.trim();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +39,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               color: AppColors.blue,
             ),
             CustomHeader(
-              text: 'log_in'.tr(),
+              text: 'sign_up'.tr(),
               onTap: () {},
             ),
             Positioned(
@@ -56,7 +60,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.09),
                       child: Assets.images.appIcon.image(),
                     ),
-                    gapH24,
+                    gapH16,
+                    CustomFormField(
+                      headingText: "user_name".tr(),
+                      hintText: "user_name".tr(),
+                      obsecureText: false,
+                      suffixIcon: const SizedBox(),
+                      maxLines: 1,
+                      textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.text,
+                      controller: _userName,
+                    ),
+                    gapH16,
                     CustomFormField(
                       headingText: "email".tr(),
                       hintText: "email".tr(),
@@ -78,45 +93,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       suffixIcon: IconButton(icon: const Icon(Icons.visibility), onPressed: () {}),
                       controller: _passwordController,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                          child: InkWell(
-                            onTap: () {},
-                            child: Text(
-                              "forgot_password".tr(),
-                              style: TextStyle(
-                                  color: AppColors.blue.withAlpha((0.7 * 255).toInt()),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    gapH24,
                     PrimaryButton(
-                      onPressed: () async {
-                        try {
-                          await signInWithEmail(
-                              _emailController.text, _passwordController.text, ref);
-                          if (context.mounted) {
-                            context.goNamed(AppRoute.resetPassword.name);
-                          }
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text("Error: $e")));
-                          }
-                        }
-                      },
+                      onPressed: () {},
                       text: 'sign_in'.tr(),
                     ),
                     CustomRichText(
-                      discription: "no_account".tr(),
-                      text: "sign_up".tr(),
+                      discription: "have_account".tr(),
+                      text: "sign_in".tr(),
                       onTap: () {
-                        context.goNamed(AppRoute.signUp.name);
+                        context.goNamed(AppRoute.signIn.name);
                       },
                     ),
                   ],

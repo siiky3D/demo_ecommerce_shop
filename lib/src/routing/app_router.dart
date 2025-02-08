@@ -1,7 +1,9 @@
 import 'package:demo_app/src/features/onboarding/data/onboarding_repository.dart';
 import 'package:demo_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:demo_app/src/features/user_authentication/data/firebase_auth_repository.dart';
+import 'package:demo_app/src/features/user_authentication/presentation/reset_password_screen.dart';
 import 'package:demo_app/src/features/user_authentication/presentation/sign_in_screen.dart';
+import 'package:demo_app/src/features/user_authentication/presentation/sign_up_screen.dart';
 import 'package:demo_app/src/routing/go_router_refresh_stream.dart';
 import 'package:demo_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 enum AppRoute {
   onboarding,
   signIn,
+  signUp,
+  resetPassword,
   productListing,
   searchFunctionality,
   shoppingCart,
@@ -99,6 +103,20 @@ GoRouter goRouter(Ref ref) {
         name: AppRoute.signIn.name,
         pageBuilder: (context, state) => const NoTransitionPage(
           child: SignInScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/signUp',
+        name: AppRoute.signUp.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: SignUpScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/resetPassword',
+        name: AppRoute.resetPassword.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ResetPasswordScreen(),
         ),
       ),
     ],

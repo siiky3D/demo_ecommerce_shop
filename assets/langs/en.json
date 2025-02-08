@@ -6,5 +6,22 @@
   "welcome3": "Let's get started!",
   "welcome3Instruction": "Come have fun with us 🎉",
   "skip": "Skip",
-  "start": "Start"
+  "start": "Start",
+  "log_in": "Log In",
+  "email": "Email",
+  "password": "Password",
+  "password_hint": "At least 8 Characters",
+  "forgot_password": "Forgot Password?",
+  "sign_in": "Sign In",
+  "no_account": "Don't already Have an account? ",
+  "have_account": "Already Have an account? ",
+  "sign_up": "Sign Up",
+  "user_name": "Username",
+  "firebase_auth_error": {
+    "invalid_email": "Your email address appears to be malformed.",
+    "weak_password": "Your password should be at least 6 characters.",
+    "wrong_password": "Your email or password is wrong.",
+    "email_already_exists": "The email address is already in use by another account.",
+    "unknown": "An error occurred. Please try again later."
+  }
 }
