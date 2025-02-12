@@ -1,6 +1,6 @@
 name: demo_app
 description: "A new Flutter project."
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -11,32 +11,48 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
-  riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
-  go_router: ^14.7.2
-  flutter_riverpod: ^2.6.1
-  lottie: ^3.3.1
-  introduction_screen: ^3.1.14
-  easy_localization: ^3.0.7+1
-  intl: any
-  shared_preferences: ^2.5.1
-  firebase_core: ^3.11.0
-  firebase_auth: ^5.4.2
-  logger: ^2.5.0
+  algolia: 1.1.2
+  cupertino_icons: 1.0.8
+  riverpod: 2.6.1
+  riverpod_annotation: 2.6.1
+  go_router: 14.7.2
+  flutter_riverpod: 2.6.1
+  lottie: 3.0.0
+  introduction_screen: 3.1.14
+  easy_localization: 3.0.7+1
+  intl: 0.19.0
+  shared_preferences: 2.5.1
+  firebase_core: 3.11.0
+  firebase_auth: 5.4.2
+  logger: 2.5.0
+  cached_network_image: 3.3.1
+  cloud_firestore: 5.6.3
+  equatable: 2.0.7
+  firebase_storage: 12.4.2
+  flutter_staggered_grid_view: 0.7.0
+  flutter_stripe: 10.1.1
+  flutter_stripe_web: 5.1.0
+  rxdart: 0.27.7
+  algoliasearch: 1.29.0
+  envied: 1.1.1
+
+dependency_overrides:
+  analyzer: ^6.3.0
+  custom_lint_core: ^0.6.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_gen_runner: ^5.9.0
-  flutter_launcher_icons: ^0.14.3
-  flutter_lints: ^5.0.0
-  flutter_native_splash: ^2.4.4
-  riverpod_generator: ^2.6.4
-  build_runner: ^2.4.14
-  custom_lint: ^0.7.2
-  riverpod_lint: ^2.6.4
+  envied_generator: 1.1.1
+  flutter_gen_runner: 5.9.0
+  flutter_launcher_icons: 0.14.3
+  flutter_lints: 5.0.0
+  flutter_native_splash: 2.4.4
+  riverpod_generator: 2.4.0
+  build_runner: 2.4.14
+  custom_lint: 0.6.4
+  riverpod_lint: 2.3.10
 
 flutter:
   uses-material-design: true

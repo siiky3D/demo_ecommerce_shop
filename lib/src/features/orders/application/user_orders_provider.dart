@@ -1,0 +1,43 @@
+import 'package:demo_app/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:demo_app/src/features/orders/domain/order.dart';
+import 'package:demo_app/src/features/orders/domain/user_order.dart';
+import 'package:demo_app/src/features/products/domain/product.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'user_orders_provider.g.dart';
+
+/// Watch the list of user orders
+/// NOTE: Only watch this provider if the user is signed in.
+@riverpod
+Stream<List<Order>> userOrders(UserOrdersRef ref) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user != null) {
+    return ref.watch(ordersRepositoryProvider).watchUserOrders(user.uid);
+  } else {
+    // If the user is null, return an empty list (no orders)
+    return Stream.value([]);
+  }
+}
+
+/// Check if a product was previously purchased by the user
+@riverpod
+Stream<List<Order>> matchingUserOrders(MatchingUserOrdersRef ref, ProductID productId) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user != null) {
+    return ref.watch(ordersRepositoryProvider).watchUserOrders(user.uid, productId: productId);
+  } else {
+    // If the user is null, return an empty list (no orders)
+    return Stream.value([]);
+  }
+}
+
+@riverpod
+Stream<UserOrderID> latestUserOrderId(LatestUserOrderIdRef ref) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user != null) {
+    return ref.watch(ordersRepositoryProvider).watchLatestUserOrderId(user.uid);
+  } else {
+    // If the user is null, return an empty list (no orders)
+    return const Stream.empty();
+  }
+}

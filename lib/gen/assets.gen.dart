@@ -50,11 +50,8 @@ class $AssetsLottiesGen {
   String get welcomScreenImage3 => 'assets/lotties/welcom_screen_image3.json';
 
   /// List of all assets
-  List<String> get values => [
-    welcomScreenImage1,
-    welcomScreenImage2,
-    welcomScreenImage3,
-  ];
+  List<String> get values =>
+      [welcomScreenImage1, welcomScreenImage2, welcomScreenImage3];
 }
 
 class Assets {
@@ -66,7 +63,11 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
@@ -126,8 +127,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;

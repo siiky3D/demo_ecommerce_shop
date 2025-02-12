@@ -16,8 +16,8 @@ class CustomRichText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * 0.149,
-          top: MediaQuery.of(context).size.height * 0.08),
+          // left: MediaQuery.of(context).size.width * 0.149,
+          top: MediaQuery.of(context).size.height * 0.04),
       child: Text.rich(
         TextSpan(
             text: discription,
