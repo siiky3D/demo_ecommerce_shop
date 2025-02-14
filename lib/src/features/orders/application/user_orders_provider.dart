@@ -1,4 +1,5 @@
 import 'package:demo_app/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:demo_app/src/features/orders/data/orders_repository.dart';
 import 'package:demo_app/src/features/orders/domain/order.dart';
 import 'package:demo_app/src/features/orders/domain/user_order.dart';
 import 'package:demo_app/src/features/products/domain/product.dart';

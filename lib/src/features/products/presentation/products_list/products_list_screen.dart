@@ -1,6 +1,7 @@
 import 'package:demo_app/src/common_widgets/responsive_center.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
 import 'package:demo_app/src/features/products/presentation/home_app_bar/home_app_bar.dart';
+import 'package:demo_app/src/features/products/presentation/products_list/products_search_text_field.dart';
 import 'package:demo_app/src/features/products/presentation/products_list/sliver_products_grid.dart';
 import 'package:demo_app/src/routing/app_router.dart';
 import 'package:flutter/material.dart';

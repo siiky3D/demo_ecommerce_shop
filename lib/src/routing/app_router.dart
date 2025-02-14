@@ -1,11 +1,12 @@
 import 'package:demo_app/src/features/onboarding/data/onboarding_repository.dart';
 import 'package:demo_app/src/features/onboarding/presentation/onboarding_screen.dart';
-import 'package:demo_app/src/features/products/presentation/produc_listing_screen.dart';
 import 'package:demo_app/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_form_type.dart';
 import 'package:demo_app/src/features/authentication/presentation/reset_password_screen.dart';
 import 'package:demo_app/src/features/authentication/presentation/sign_in_screen.dart';
 import 'package:demo_app/src/features/authentication/presentation/sign_up_screen.dart';
+import 'package:demo_app/src/features/products/presentation/product_screen/product_screen.dart';
+import 'package:demo_app/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:demo_app/src/routing/go_router_refresh_stream.dart';
 import 'package:demo_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,6 @@ enum AppRoute {
   searchFunctionality,
   shippingAndDeliveryOptions,
   signIn,
-  signUp,
   socialSharing,
   userAuthentication,
   wishlist,
@@ -64,44 +64,24 @@ GoRouter goRouter(Ref ref) {
       final path = state.uri.path;
 
       if (!didCompleteOnboarding) {
-        if (path != '/onboarding') {
+        if (path != 'onboarding') {
           return '/onboarding';
         }
         return null;
       }
-
-      if (isLoggedIn) {
-        // if (path.startsWith('/onboarding') || path.startsWith('/signIn')) {
+      if (!isLoggedIn) {
+        if (path == '/account' || path == '/orders' || path == '/checkout' || path == '/') {
+          return '/signIn';
+        }
+        if (path.startsWith('/admin')) {
+          return '/signIn';
+        }
+      } else {
         if (path == '/signIn') {
           return '/';
         }
         final isAdmin = await user.isAdmin();
         if (!isAdmin && path.startsWith('/admin')) {
-          return '/';
-        }
-      } else {
-        final protectedRoutes = [
-          '/onboarding',
-          '/productListing',
-          '/searchFunctionality',
-          '/shoppingCart',
-          '/checkoutAndPayment',
-          '/productReviewsAndRatings',
-          '/promotionsAndDiscounts',
-          '/userAuthentication',
-          '/orderTracking',
-          '/profileManagement',
-          '/pushNotifications',
-          '/adminPanel',
-          '/socialSharing',
-          '/wishlist',
-          '/shippingAndDeliveryOptions',
-          '/orderHistory',
-        ];
-        if (protectedRoutes.any(path.startsWith)) {
-          return '/';
-        }
-        if (path.startsWith('/admin')) {
           return '/';
         }
       }
@@ -112,13 +92,24 @@ GoRouter goRouter(Ref ref) {
       GoRoute(
         path: '/',
         name: AppRoute.home.name,
-        builder: (context, state) => const ProductListingScreen(),
-        routes: [],
+        builder: (context, state) => const ProductsListScreen(),
+        routes: [
+          GoRoute(
+            path: 'product/:id',
+            name: AppRoute.product.name,
+            builder: (context, state) {
+              final productId = state.pathParameters['id']!;
+              return ProductScreen(productId: productId);
+            },
+            routes: [],
+          ),
+        ],
       ),
       GoRoute(
         path: '/onboarding',
         name: AppRoute.onboarding.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
+        pageBuilder: (context, state) => const MaterialPage(
+          fullscreenDialog: true,
           child: OnboardingScreen(),
         ),
       ),
@@ -131,21 +122,25 @@ GoRouter goRouter(Ref ref) {
         ),
       ),
       GoRoute(
-        path: '/signUp',
-        name: AppRoute.signUp.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: SignUpScreen(),
-        ),
-      ),
-      GoRoute(
         path: '/resetPassword',
         name: AppRoute.resetPassword.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
+        pageBuilder: (context, state) => CustomTransitionPage(
+          fullscreenDialog: true,
           child: ResetPasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.easeInOut));
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
         ),
       ),
     ],
-    errorPageBuilder: (context, state) => const NoTransitionPage(
+    errorPageBuilder: (context, state) => const MaterialPage(
+      fullscreenDialog: true,
       child: NotFoundScreen(),
     ),
   );

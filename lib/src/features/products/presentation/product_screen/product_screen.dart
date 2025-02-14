@@ -2,11 +2,15 @@ import 'package:demo_app/src/common_widgets/async_value_widget.dart';
 import 'package:demo_app/src/common_widgets/custom_image.dart';
 import 'package:demo_app/src/common_widgets/empty_placeholder_widget.dart';
 import 'package:demo_app/src/common_widgets/responsive_center.dart';
+import 'package:demo_app/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
 import 'package:demo_app/src/constants/string_hardcoded.dart';
+import 'package:demo_app/src/features/cart/presentation/add_to_cart/add_to_cart_widget.dart';
 import 'package:demo_app/src/features/products/data/products_repository.dart';
 import 'package:demo_app/src/features/products/domain/product.dart';
 import 'package:demo_app/src/features/products/presentation/home_app_bar/home_app_bar.dart';
+import 'package:demo_app/src/features/products/presentation/product_screen/leave_review_action.dart';
+import 'package:demo_app/src/features/products/presentation/product_screen/product_average_rating.dart';
 import 'package:demo_app/src/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +39,9 @@ class ProductScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(Sizes.p16),
                         child: ProductDetails(product: product),
                       ),
-                      ProductReviewsList(productId: productId),
+
+                      //*TODO: Show reviews if there are any
+                      // ProductReviewsList(productId: productId),
                     ],
                   ),
           );

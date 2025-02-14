@@ -8,8 +8,23 @@ part 'email_password_sign_in_controller.g.dart';
 
 @riverpod
 class EmailPasswordSignInController extends _$EmailPasswordSignInController {
+  bool _isPasswordVisible = false;
+  bool _isRememberMe = false;
   @override
   FutureOr<void> build() {}
+
+  bool get isPasswordVisible => _isPasswordVisible;
+  bool get isRememberMe => _isRememberMe;
+
+  void togglePasswordVisibility() {
+    _isPasswordVisible = !_isPasswordVisible;
+    ref.notifyListeners();
+  }
+
+  void toggleRememberMe() {
+    _isRememberMe = !_isRememberMe;
+    ref.notifyListeners();
+  }
 
   Future<bool> submit({
     required String email,

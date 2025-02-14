@@ -1,10 +1,10 @@
-import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
-import 'package:ecommerce_app/src/features/orders/data/orders_repository.dart';
-import 'package:ecommerce_app/src/features/orders/domain/order.dart';
-import 'package:ecommerce_app/src/features/orders/domain/user_order.dart';
-import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:ecommerce_app/src/utils/delay.dart';
-import 'package:ecommerce_app/src/utils/in_memory_store.dart';
+import 'package:demo_app/src/features/authentication/domain/app_user.dart';
+import 'package:demo_app/src/features/orders/data/orders_repository.dart';
+import 'package:demo_app/src/features/orders/domain/order.dart';
+import 'package:demo_app/src/features/orders/domain/user_order.dart';
+import 'package:demo_app/src/features/products/domain/product.dart';
+import 'package:demo_app/src/utils/delay.dart';
+import 'package:demo_app/src/utils/in_memory_store.dart';
 
 class FakeOrdersRepository implements OrdersRepository {
   FakeOrdersRepository({this.addDelay = true});
@@ -26,9 +26,7 @@ class FakeOrdersRepository implements OrdersRepository {
         (lhs, rhs) => rhs.orderDate.compareTo(lhs.orderDate),
       );
       if (productId != null) {
-        return ordersList
-            .where((order) => order.items.keys.contains(productId))
-            .toList();
+        return ordersList.where((order) => order.items.keys.contains(productId)).toList();
       } else {
         return ordersList;
       }

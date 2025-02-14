@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
-import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
-import 'package:ecommerce_app/src/features/orders/domain/order.dart';
-import 'package:ecommerce_app/src/features/orders/domain/user_order.dart';
-import 'package:ecommerce_app/src/features/products/domain/product.dart';
+import 'package:demo_app/src/features/authentication/domain/app_user.dart';
+import 'package:demo_app/src/features/orders/domain/order.dart';
+import 'package:demo_app/src/features/orders/domain/user_order.dart';
+import 'package:demo_app/src/features/products/domain/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'orders_repository.g.dart';
@@ -20,8 +20,9 @@ class OrdersRepository {
   /// will be returned
   Stream<List<Order>> watchUserOrders(UserID uid, {ProductID? productId}) {
     final ref = _userOrdersRef(uid, productId: productId);
-    return ref.snapshots().map((snapshot) =>
-        snapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
+    return ref
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
   }
 
   /// Get the latest order ID for the given user
@@ -43,9 +44,7 @@ class OrdersRepository {
   /// For more details, read this:
   /// https://firebase.blog/posts/2019/06/understanding-collection-group-queries
   Query<Order> _userOrdersRef(String uid, {ProductID? productId}) {
-    var query = _firestore
-        .collectionGroup(ordersPath())
-        .where('userId', isEqualTo: uid);
+    var query = _firestore.collectionGroup(ordersPath()).where('userId', isEqualTo: uid);
     if (productId != null) {
       query = query.where('productIds', arrayContains: productId);
     }

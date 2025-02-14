@@ -1,22 +1,24 @@
 import 'package:demo_app/src/common_widgets/custom_formfield.dart';
 import 'package:demo_app/src/common_widgets/primary_button.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
+import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_controller.dart';
 import 'package:demo_app/src/routing/app_router.dart';
 import 'package:demo_app/src/exceptions/auth_exceptions_handler.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
+class ResetPasswordScreen extends ConsumerStatefulWidget {
   static const String id = 'reset_password';
   const ResetPasswordScreen({super.key});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ResetPasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   final _key = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   static final auth = FirebaseAuth.instance;
@@ -39,6 +41,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(emailPasswordSignInControllerProvider);
+
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
@@ -53,7 +57,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: () => context.goNamed(AppRoute.signIn.name),
+                  onTap: () => context.pop(),
                   child: const Icon(Icons.close),
                 ),
                 gapH24,
@@ -75,6 +79,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 gapH32,
                 CustomFormField(
+                  enabled: !state.isLoading,
                   controller: _emailController,
                   headingText: "email".tr(),
                   maxLines: 1,

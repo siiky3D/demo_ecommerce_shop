@@ -3,6 +3,7 @@ import 'package:demo_app/src/constants/string_hardcoded.dart';
 import 'package:demo_app/src/exceptions/error_logger.dart';
 import 'package:demo_app/src/features/authentication/application/user_token_refresh_service.dart';
 import 'package:demo_app/src/features/cart/application/cart_sync_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +24,12 @@ class AppBootstrap {
 
     return UncontrolledProviderScope(
       container: container,
-      child: const MyApp(),
+      child: EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('th')],
+        path: 'assets/langs',
+        fallbackLocale: Locale('en', 'US'),
+        child: const MyApp(),
+      ),
     );
   }
 

@@ -7,7 +7,7 @@ part of 'email_password_sign_in_controller.dart';
 // **************************************************************************
 
 String _$emailPasswordSignInControllerHash() =>
-    r'9297287fca9087a9a6e5d554d6136e07b3f0cea0';
+    r'9fff4fa0a48067744bd53399d136b2d5bfe3678b';
 
 /// See also [EmailPasswordSignInController].
 @ProviderFor(EmailPasswordSignInController)

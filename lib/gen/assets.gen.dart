@@ -54,12 +54,91 @@ class $AssetsLottiesGen {
       [welcomScreenImage1, welcomScreenImage2, welcomScreenImage3];
 }
 
+class $AssetsProductsGen {
+  const $AssetsProductsGen();
+
+  /// File path: assets/products/bruschetta-plate.jpg
+  AssetGenImage get bruschettaPlate =>
+      const AssetGenImage('assets/products/bruschetta-plate.jpg');
+
+  /// File path: assets/products/flowers-plate.jpg
+  AssetGenImage get flowersPlate =>
+      const AssetGenImage('assets/products/flowers-plate.jpg');
+
+  /// File path: assets/products/honey-pot.jpg
+  AssetGenImage get honeyPot =>
+      const AssetGenImage('assets/products/honey-pot.jpg');
+
+  /// File path: assets/products/juicer-citrus-fruits.jpg
+  AssetGenImage get juicerCitrusFruits =>
+      const AssetGenImage('assets/products/juicer-citrus-fruits.jpg');
+
+  /// File path: assets/products/mozzarella-plate.jpg
+  AssetGenImage get mozzarellaPlate =>
+      const AssetGenImage('assets/products/mozzarella-plate.jpg');
+
+  /// File path: assets/products/pasta-plate.jpg
+  AssetGenImage get pastaPlate =>
+      const AssetGenImage('assets/products/pasta-plate.jpg');
+
+  /// File path: assets/products/piggy-blue.jpg
+  AssetGenImage get piggyBlue =>
+      const AssetGenImage('assets/products/piggy-blue.jpg');
+
+  /// File path: assets/products/piggy-green.jpg
+  AssetGenImage get piggyGreen =>
+      const AssetGenImage('assets/products/piggy-green.jpg');
+
+  /// File path: assets/products/piggy-pink.jpg
+  AssetGenImage get piggyPink =>
+      const AssetGenImage('assets/products/piggy-pink.jpg');
+
+  /// File path: assets/products/pizza-plate.jpg
+  AssetGenImage get pizzaPlate =>
+      const AssetGenImage('assets/products/pizza-plate.jpg');
+
+  /// File path: assets/products/plate-and-bowl.jpg
+  AssetGenImage get plateAndBowl =>
+      const AssetGenImage('assets/products/plate-and-bowl.jpg');
+
+  /// File path: assets/products/salt-pepper-lemon.jpg
+  AssetGenImage get saltPepperLemon =>
+      const AssetGenImage('assets/products/salt-pepper-lemon.jpg');
+
+  /// File path: assets/products/salt-pepper-olives.jpg
+  AssetGenImage get saltPepperOlives =>
+      const AssetGenImage('assets/products/salt-pepper-olives.jpg');
+
+  /// File path: assets/products/snacks-plate.jpg
+  AssetGenImage get snacksPlate =>
+      const AssetGenImage('assets/products/snacks-plate.jpg');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        bruschettaPlate,
+        flowersPlate,
+        honeyPot,
+        juicerCitrusFruits,
+        mozzarellaPlate,
+        pastaPlate,
+        piggyBlue,
+        piggyGreen,
+        piggyPink,
+        pizzaPlate,
+        plateAndBowl,
+        saltPepperLemon,
+        saltPepperOlives,
+        snacksPlate
+      ];
+}
+
 class Assets {
   const Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLangsGen langs = $AssetsLangsGen();
   static const $AssetsLottiesGen lotties = $AssetsLottiesGen();
+  static const $AssetsProductsGen products = $AssetsProductsGen();
 }
 
 class AssetGenImage {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomRichText extends StatelessWidget {
   final String discription;
   final String text;
-  final Function() onTap;
+  final VoidCallback? onTap;
   const CustomRichText({
     super.key,
     required this.discription,

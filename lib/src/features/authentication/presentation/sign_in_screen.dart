@@ -3,14 +3,18 @@ import 'package:demo_app/src/common_widgets/custom_richtext.dart';
 import 'package:demo_app/src/common_widgets/primary_button.dart';
 import 'package:demo_app/src/constants/app_colors.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
+import 'package:demo_app/src/constants/global_variable.dart';
 import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_controller.dart';
 import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_form_type.dart';
 import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_validators.dart';
 import 'package:demo_app/src/features/authentication/presentation/header/custom_header.dart';
+import 'package:demo_app/src/features/authentication/presentation/string_validators.dart';
 import 'package:demo_app/src/routing/app_router.dart';
 import 'package:demo_app/src/utils/async_value_ui.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -104,99 +108,153 @@ class _SignInContentsState extends ConsumerState<SignInContents> with EmailAndPa
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        logger.i('User is currently signed out!');
+      } else {
+        logger.i('User is signed in!');
+      }
+    });
     ref.listen<AsyncValue>(
       emailPasswordSignInControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
     final state = ref.watch(emailPasswordSignInControllerProvider);
-    return SafeArea(
-      child: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: AppColors.blue,
-          ),
-          CustomHeader(
-            text: 'log_in'.tr(),
-            onTap: () {},
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.08,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.9,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                  color: AppColors.whiteshade,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: Sizes.p16, horizontal: Sizes.p24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    gapH24,
-                    CustomFormField(
-                      headingText: "email".tr(),
-                      hintText: "email".tr(),
-                      obsecureText: false,
-                      suffixIcon: const SizedBox(),
-                      controller: _emailController,
-                      maxLines: 1,
-                      textInputAction: TextInputAction.done,
-                      textInputType: TextInputType.emailAddress,
-                    ),
-                    gapH16,
-                    CustomFormField(
-                      headingText: "password".tr(),
-                      maxLines: 1,
-                      textInputAction: TextInputAction.done,
-                      textInputType: TextInputType.text,
-                      hintText: "password".tr(),
-                      obsecureText: true,
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.visibility),
-                        onPressed: () {},
-                      ),
-                      controller: _passwordController,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+    final isPasswordVisible =
+        ref.watch(emailPasswordSignInControllerProvider.notifier).isPasswordVisible;
+    final isRememberMe = ref.watch(emailPasswordSignInControllerProvider.notifier).isRememberMe;
+    return FocusScope(
+      node: _node,
+      child: Form(
+        key: _formKey,
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: AppColors.blue,
+              ),
+              CustomHeader(
+                text: _formType.title,
+                onTap: () {},
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.08,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                      color: AppColors.whiteshade,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: Sizes.p16, horizontal: Sizes.p24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                          child: InkWell(
-                            onTap: () {
-                              context.goNamed(AppRoute.resetPassword.name);
-                            },
-                            child: Text(
-                              "forgot_password".tr(),
-                              style: TextStyle(
-                                  color: AppColors.blue.withAlpha((0.7 * 255).toInt()),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
+                        gapH24,
+                        CustomFormField(
+                          key: SignInScreen.emailKey,
+                          controller: _emailController,
+                          headingText: "email".tr(),
+                          hintText: "email".tr(),
+                          obsecureText: false,
+                          enabled: !state.isLoading,
+                          suffixIcon: const SizedBox(),
+                          maxLines: 1,
+                          textInputAction: TextInputAction.next,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputType: TextInputType.emailAddress,
+                          autocorrect: false,
+                          onEditingComplete: _emailEditingComplete,
+                          validator: (email) => !_submitted ? null : emailErrorText(email ?? ''),
+                          inputFormatters: <TextInputFormatter>[
+                            ValidatorInputFormatter(editingValidator: EmailEditingRegexValidator())
+                          ],
                         ),
+                        gapH16,
+                        CustomFormField(
+                          key: SignInScreen.passwordKey,
+                          controller: _passwordController,
+                          headingText: "password".tr(),
+                          hintText: "password".tr(),
+                          obsecureText: !isPasswordVisible,
+                          enabled: !state.isLoading,
+                          suffixIcon: IconButton(
+                            icon: !isPasswordVisible
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility),
+                            onPressed: () => ref
+                                .read(emailPasswordSignInControllerProvider.notifier)
+                                .togglePasswordVisibility(),
+                          ),
+                          maxLines: 1,
+                          textInputAction: TextInputAction.done,
+                          textInputType: TextInputType.text,
+                          autocorrect: false,
+                          onEditingComplete: _passwordEditingComplete,
+                          validator: (password) =>
+                              !_submitted ? null : passwordErrorText(password ?? '', _formType),
+                        ),
+                        if (_formType == EmailPasswordSignInFormType.signIn)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 16),
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                        value: isRememberMe,
+                                        onChanged: (_) {
+                                          ref
+                                              .read(emailPasswordSignInControllerProvider.notifier)
+                                              .toggleRememberMe();
+                                        }),
+                                    Text(
+                                      "remember_me".tr(),
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(255, 0, 0, 0)
+                                              .withAlpha((0.7 * 255).toInt()),
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 16),
+                                child: InkWell(
+                                  onTap: () => context.pushNamed(AppRoute.resetPassword.name),
+                                  child: Text(
+                                    "forgot_password".tr(),
+                                    style: TextStyle(
+                                        color: AppColors.blue.withAlpha((0.7 * 255).toInt()),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        if (_formType != EmailPasswordSignInFormType.signIn) gapH16,
+                        PrimaryButton(
+                          text: _formType.primaryButtonText,
+                          isLoading: state.isLoading,
+                          onPressed: state.isLoading ? null : () => _submit(),
+                        ),
+                        CustomRichText(
+                            discription: "".tr(),
+                            text: _formType.secondaryButtonText,
+                            onTap: state.isLoading ? null : _updateFormType),
                       ],
                     ),
-                    PrimaryButton(
-                      onPressed: () async {},
-                      text: 'sign_in'.tr(),
-                    ),
-                    CustomRichText(
-                      discription: "no_account".tr(),
-                      text: "sign_up".tr(),
-                      onTap: () {
-                        context.goNamed(AppRoute.signUp.name);
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
