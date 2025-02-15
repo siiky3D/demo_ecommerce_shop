@@ -17,6 +17,21 @@
   "have_account": "มีบัญชีอยู่แล้ว? ",
   "sign_up": "สมัครสมาชิก",
   "user_name": "ชื่อผู้ใช้",
+  "remember_me": "จดจำฉันไว้ในระบบ",
+
+  "auth": {
+    "password_label": "รหัสผ่าน",
+    "password_label_register": "รหัสผ่าน (8 ตัวอักษรขึ้นไป)",
+    "primary_button_sign_in": "เข้าสู่ระบบ",
+    "primary_button_register": "สร้างบัญชีใหม่",
+    "secondary_button_sign_in": "ต้องการบัญชี? ลงทะเบียน",
+    "secondary_button_register": "มีบัญชีแล้ว? เข้าสู่ระบบ",
+    "error_alert_sign_in": "เข้าสู่ระบบล้มเหลว",
+    "error_alert_register": "การลงทะเบียนล้มเหลว",
+    "title_sign_in": "เข้าสู่ระบบ",
+    "title_register": "ลงทะเบียน"
+  },
+
   "firebase_auth_error": {
     "invalid_email": "ที่อยู่อีเมลของคุณไม่ถูกต้อง",
     "weak_password": "รหัสผ่านของคุณควรมีอย่างน้อย 6 ตัวอักษร",

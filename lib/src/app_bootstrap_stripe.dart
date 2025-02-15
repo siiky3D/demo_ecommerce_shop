@@ -14,8 +14,7 @@ extension AppBootstrapStripe on AppBootstrap {
       // https://stripe.com/docs/payments/mobile/accept-payment?platform=ios&ui=payment-sheet#ios-set-up-return-url
       Stripe.urlScheme = 'flutterstripe';
 
-      //* TODO: Uncomment the following line to apply settings
-      // await Stripe.instance.applySettings();
+      await Stripe.instance.applySettings();
     }
   }
 }

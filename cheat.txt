@@ -1,0 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+Future<void> addProductsBatch() async {
+  WriteBatch batch = firestore.batch();
+
+  List<Map<String, dynamic>> products = List.generate(50, (index) => {
+        "title": { "en": "Product $index", "th": "สินค้า $index" },
+        "description": { "en": "Description of product $index", "th": "รายละเอียดสินค้า $index" },
+        "price": (index + 1) * 10.0, // ราคาสุ่ม
+        "availableQuantity": (index + 1) * 5, // จำนวนสินค้า
+        "avgRating": (index % 5) + 1.0, // คะแนน 1-5
+        "numRatings": (index + 1) * 3, // จำนวนรีวิว
+        "category": ["category_${index % 5}"], // หมวดหมู่แบบสุ่ม
+        "imageUrl": "https://example.com/product_$index.jpg",
+        "createdAt": FieldValue.serverTimestamp(),
+        "updatedAt": FieldValue.serverTimestamp(),
+        "attributes": {
+          "brand": "Brand ${(index % 3) + 1}",
+          "color": ["red", "blue", "green"][index % 3],
+          "size": ["S", "M", "L"][(index % 3)]
+        }
+      });
+
+  for (var product in products) {
+    DocumentReference docRef = firestore.collection("products").doc();
+    batch.set(docRef, product);
+  }
+
+  await batch.commit();
+  print("✅ Successfully added 50 products!");
+}
+
+addProductsBatch();

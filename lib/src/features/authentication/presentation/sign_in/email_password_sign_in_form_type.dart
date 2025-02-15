@@ -1,30 +1,31 @@
 import 'package:demo_app/src/constants/string_hardcoded.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum EmailPasswordSignInFormType { signIn, register }
 
 extension EmailPasswordSignInFormTypeX on EmailPasswordSignInFormType {
   String get passwordLabelText {
     if (this == EmailPasswordSignInFormType.register) {
-      return 'Password (8+ characters)'.hardcoded;
+      return "auth.password_label_register".tr();
     } else {
-      return 'Password'.hardcoded;
+      return "auth.password_label".tr();
     }
   }
 
   // Getters
   String get primaryButtonText {
     if (this == EmailPasswordSignInFormType.register) {
-      return 'Create an account'.hardcoded;
+      return "auth.primary_button_register".tr();
     } else {
-      return 'Sign in'.hardcoded;
+      return "auth.primary_button_sign_in".tr();
     }
   }
 
   String get secondaryButtonText {
     if (this == EmailPasswordSignInFormType.register) {
-      return 'Have an account? Sign in'.hardcoded;
+      return "auth.secondary_button_register".tr();
     } else {
-      return 'Need an account? Register'.hardcoded;
+      return "auth.secondary_button_sign_in".tr();
     }
   }
 
@@ -38,17 +39,17 @@ extension EmailPasswordSignInFormTypeX on EmailPasswordSignInFormType {
 
   String get errorAlertTitle {
     if (this == EmailPasswordSignInFormType.register) {
-      return 'Registration failed'.hardcoded;
+      return "auth.error_alert_register".tr();
     } else {
-      return 'Sign in failed'.hardcoded;
+      return "auth.error_alert_sign_in".tr();
     }
   }
 
   String get title {
     if (this == EmailPasswordSignInFormType.register) {
-      return 'Register'.hardcoded;
+      return "auth.title_register".tr();
     } else {
-      return 'Sign in'.hardcoded;
+      return "auth.title_sign_in".tr();
     }
   }
 }

@@ -17,6 +17,21 @@
   "have_account": "Already Have an account? ",
   "sign_up": "Sign Up",
   "user_name": "Username",
+  "remember_me": "Remember Me",
+
+  "auth": {
+    "password_label": "Password",
+    "password_label_register": "Password (8+ characters)",
+    "primary_button_sign_in": "Sign in",
+    "primary_button_register": "Create an account",
+    "secondary_button_sign_in": "Need an account? Register",
+    "secondary_button_register": "Have an account? Sign in",
+    "error_alert_sign_in": "Sign in failed",
+    "error_alert_register": "Registration failed",
+    "title_sign_in": "Sign in",
+    "title_register": "Register"
+  },
+
   "firebase_auth_error": {
     "invalid_email": "Your email address appears to be malformed.",
     "weak_password": "Your password should be at least 6 characters.",

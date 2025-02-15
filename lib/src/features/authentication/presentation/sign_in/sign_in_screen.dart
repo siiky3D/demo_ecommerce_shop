@@ -29,7 +29,10 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SignInContents(formType: formType),
+      body: SignInContents(
+        formType: formType,
+        // onSignedIn: () => context.goNamed(AppRoute.home.name),
+      ),
     );
   }
 }
@@ -71,7 +74,7 @@ class _SignInContentsState extends ConsumerState<SignInContents> with EmailAndPa
 
   Future<void> _submit() async {
     setState(() => _submitted = true);
-    if (!_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       final controller = ref.read(emailPasswordSignInControllerProvider.notifier);
       final success = await controller.submit(
         email: email,
@@ -79,7 +82,8 @@ class _SignInContentsState extends ConsumerState<SignInContents> with EmailAndPa
         formType: _formType,
       );
 
-      if (success) {
+      if (success && mounted) {
+        context.goNamed(AppRoute.home.name);
         widget.onSignedIn?.call();
       }
     }
@@ -103,18 +107,13 @@ class _SignInContentsState extends ConsumerState<SignInContents> with EmailAndPa
     // * Toggle between register and sign in form
     setState(() => _formType = _formType.secondaryActionFormType);
     // * Clear the password field when doing so
+    _emailController.clear();
     _passwordController.clear();
+    _node.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        logger.i('User is currently signed out!');
-      } else {
-        logger.i('User is signed in!');
-      }
-    });
     ref.listen<AsyncValue>(
       emailPasswordSignInControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),

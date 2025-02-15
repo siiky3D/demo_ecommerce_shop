@@ -1,12 +1,20 @@
+import 'package:demo_app/src/features/authentication/presentation/account/account_screen.dart';
+import 'package:demo_app/src/features/cart/presentation/shopping_cart/shopping_cart_screen.dart';
+import 'package:demo_app/src/features/checkout/presentation/checkout_screen/checkout_screen.dart';
 import 'package:demo_app/src/features/onboarding/data/onboarding_repository.dart';
 import 'package:demo_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:demo_app/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:demo_app/src/features/authentication/presentation/sign_in/email_password_sign_in_form_type.dart';
 import 'package:demo_app/src/features/authentication/presentation/reset_password/reset_password_screen.dart';
 import 'package:demo_app/src/features/authentication/presentation/sign_in/sign_in_screen.dart';
-import 'package:demo_app/src/features/authentication/presentation/sign_in/sign_up_screen.dart';
+import 'package:demo_app/src/features/orders/presentation/orders_list/orders_list_screen.dart';
 import 'package:demo_app/src/features/products/presentation/product_screen/product_screen.dart';
 import 'package:demo_app/src/features/products/presentation/products_list/products_list_screen.dart';
+import 'package:demo_app/src/features/products_admin/presentation/admin_product_edit_screen.dart';
+import 'package:demo_app/src/features/products_admin/presentation/admin_product_upload_screen.dart';
+import 'package:demo_app/src/features/products_admin/presentation/admin_products_add_screen.dart';
+import 'package:demo_app/src/features/products_admin/presentation/admin_products_screen.dart';
+import 'package:demo_app/src/features/reviews/presentation/leave_review_screen/leave_review_screen.dart';
 import 'package:demo_app/src/routing/go_router_refresh_stream.dart';
 import 'package:demo_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +110,100 @@ GoRouter goRouter(Ref ref) {
               final productId = state.pathParameters['id']!;
               return ProductScreen(productId: productId);
             },
-            routes: [],
+            routes: [
+              GoRoute(
+                path: 'review',
+                name: AppRoute.leaveReview.name,
+                pageBuilder: (context, state) {
+                  final productId = state.pathParameters['id']!;
+                  return MaterialPage(
+                    fullscreenDialog: true,
+                    child: LeaveReviewScreen(productId: productId),
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'cart',
+            name: AppRoute.cart.name,
+            pageBuilder: (context, state) => const MaterialPage(
+              fullscreenDialog: true,
+              child: ShoppingCartScreen(),
+            ),
+            routes: [
+              GoRoute(
+                path: 'checkout',
+                name: AppRoute.checkout.name,
+                pageBuilder: (context, state) => const MaterialPage(
+                  fullscreenDialog: true,
+                  child: CheckoutScreen(),
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'orders',
+            name: AppRoute.orders.name,
+            pageBuilder: (context, state) => const MaterialPage(
+              fullscreenDialog: true,
+              child: OrdersListScreen(),
+            ),
+          ),
+          GoRoute(
+            path: 'account',
+            name: AppRoute.account.name,
+            pageBuilder: (context, state) => const MaterialPage(
+              fullscreenDialog: true,
+              child: AccountScreen(),
+            ),
+          ),
+          GoRoute(
+            path: 'signIn',
+            name: AppRoute.signIn.name,
+            pageBuilder: (context, state) => const MaterialPage(
+              fullscreenDialog: true,
+              child: SignInScreen(formType: EmailPasswordSignInFormType.signIn),
+            ),
+          ),
+          GoRoute(
+            path: 'admin',
+            name: AppRoute.admin.name,
+            pageBuilder: (context, state) => const MaterialPage(
+              fullscreenDialog: true,
+              child: AdminProductsScreen(),
+            ),
+            routes: [
+              GoRoute(
+                path: 'add',
+                name: AppRoute.adminAdd.name,
+                pageBuilder: (context, state) => const MaterialPage(
+                  fullscreenDialog: true,
+                  child: AdminProductsAddScreen(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    name: AppRoute.adminUploadProduct.name,
+                    builder: (context, state) {
+                      final productId = state.pathParameters['id']!;
+                      return AdminProductUploadScreen(productId: productId);
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'edit/:id',
+                name: AppRoute.adminEditProduct.name,
+                pageBuilder: (context, state) {
+                  final productId = state.pathParameters['id']!;
+                  return MaterialPage(
+                    fullscreenDialog: true,
+                    child: AdminProductEditScreen(productId: productId),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
@@ -112,14 +213,6 @@ GoRouter goRouter(Ref ref) {
         pageBuilder: (context, state) => const MaterialPage(
           fullscreenDialog: true,
           child: OnboardingScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/signIn',
-        name: AppRoute.signIn.name,
-        pageBuilder: (context, state) => const MaterialPage(
-          fullscreenDialog: true,
-          child: SignInScreen(formType: EmailPasswordSignInFormType.signIn),
         ),
       ),
       GoRoute(
