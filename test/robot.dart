@@ -1,23 +1,110 @@
-// import 'package:mocktail/mocktail.dart';
+import 'package:demo_app/src/app.dart';
+import 'package:demo_app/src/app_bootstrap.dart';
+import 'package:demo_app/src/app_bootstrap_fakes.dart';
+import 'package:demo_app/src/features/cart/application/cart_sync_service.dart';
+import 'package:demo_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// class MockAuthRepository extends Mock implements FakeAuthRepository {}
+import 'src/features/authentication/auth_robot.dart';
+import 'src/features/cart/cart_robot.dart';
+import 'src/features/checkout/checkout_robot.dart';
+import 'src/features/orders/orders_robot.dart';
+import 'src/features/products/products_robot.dart';
+import 'src/features/reviews/reviews_robot.dart';
+import 'src/golden/golden_robot.dart';
 
-// class MockRemoteCartRepository extends Mock implements RemoteCartRepository {}
+class Robot {
+  Robot(this.tester)
+      : auth = AuthRobot(tester),
+        products = ProductsRobot(tester),
+        cart = CartRobot(tester),
+        checkout = CheckoutRobot(tester),
+        orders = OrdersRobot(tester),
+        reviews = ReviewsRobot(tester),
+        golden = GoldenRobot(tester);
+  final WidgetTester tester;
+  final AuthRobot auth;
+  final ProductsRobot products;
+  final CartRobot cart;
+  final CheckoutRobot checkout;
+  final OrdersRobot orders;
+  final ReviewsRobot reviews;
+  final GoldenRobot golden;
 
-// class MockLocalCartRepository extends Mock implements LocalCartRepository {}
+  Future<void> pumpMyAppWithFakes() async {
+    final appBootstrap = AppBootstrap();
+    final container = await appBootstrap.createFakesProviderContainer(addDelay: false);
+    // * Initialize CartSyncService to start the listener
+    container.read(cartSyncServiceProvider);
+    // * Entry point of the app
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const MyApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
 
-// class MockCartService extends Mock implements CartService {}
+  Future<void> openPopupMenu() async {
+    final finder = find.byType(MoreMenuButton);
+    final matches = finder.evaluate();
+    // if an item is found, it means that we're running
+    // on a small window and can tap to reveal the menu
+    if (matches.isNotEmpty) {
+      await tester.tap(finder);
+      await tester.pumpAndSettle();
+    }
+    // else no-op, as the items are already visible
+  }
 
-// class MockProductsRepository extends Mock implements FakeProductsRepository {}
+  // navigation
+  Future<void> closePage() async {
+    final finder = find.byTooltip('Close');
+    expect(finder, findsOneWidget);
+    await tester.tap(finder);
+    await tester.pumpAndSettle();
+  }
 
-// class MockOrdersRepository extends Mock implements FakeOrdersRepository {}
+  Future<void> goBack() async {
+    final finder = find.byTooltip('Back');
+    expect(finder, findsOneWidget);
+    await tester.tap(finder);
+    await tester.pumpAndSettle();
+  }
 
-// class MockCheckoutService extends Mock implements FakeCheckoutService {}
-
-// class MockReviewsRepository extends Mock implements FakeReviewsRepository {}
-
-// class MockReviewsService extends Mock implements ReviewsService {}
-
-// class Listener<T> extends Mock {
-//   void call(T? previous, T next);
-// }
+  Future<void> fullPurchaseFlow() async {
+    products.expectProductsListLoaded();
+    // add to cart flows
+    await products.selectProduct();
+    await products.setProductQuantity(3);
+    await cart.addToCart();
+    await cart.openCart();
+    cart.expectFindNCartItems(1);
+    // checkout
+    await checkout.startCheckout();
+    await auth.enterAndSubmitEmailAndPassword();
+    cart.expectFindNCartItems(1);
+    await checkout.startPayment();
+    // when a payment is complete, user is taken to the orders page
+    orders.expectFindNOrders(1);
+    await closePage(); // close orders page
+    // check that cart is now empty
+    await cart.openCart();
+    cart.expectFindZeroCartItems();
+    await closePage();
+    // reviews flow
+    await products.selectProduct();
+    reviews.expectFindLeaveReview();
+    await reviews.tapLeaveReviewButton();
+    await reviews.createAndSubmitReview('Love it!');
+    reviews.expectFindOneReview();
+    // sign out
+    await openPopupMenu();
+    await auth.openAccountScreen();
+    await auth.tapLogoutButton();
+    await auth.tapDialogLogoutButton();
+    products.expectProductsListLoaded();
+  }
+}

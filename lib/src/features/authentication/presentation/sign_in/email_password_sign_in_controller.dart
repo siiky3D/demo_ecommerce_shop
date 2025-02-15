@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:demo_app/src/features/authentication/data/firebase_auth_repository.dart';
-import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_form_type.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/email_password_sign_in_form_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'email_password_sign_in_controller.g.dart';

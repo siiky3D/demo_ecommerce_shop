@@ -1,6 +1,6 @@
 import 'package:demo_app/src/constants/string_hardcoded.dart';
-import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_form_type.dart';
-import 'package:demo_app/src/features/authentication/presentation/string_validators.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/email_password_sign_in_form_type.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/string_validators.dart';
 
 /// Mixin class to be used for client-side email & password validation
 mixin EmailAndPasswordValidators {

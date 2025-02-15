@@ -1,7 +1,7 @@
 import 'package:demo_app/src/common_widgets/custom_formfield.dart';
 import 'package:demo_app/src/common_widgets/primary_button.dart';
 import 'package:demo_app/src/constants/app_sizes.dart';
-import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_controller.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/email_password_sign_in_controller.dart';
 import 'package:demo_app/src/routing/app_router.dart';
 import 'package:demo_app/src/exceptions/auth_exceptions_handler.dart';
 import 'package:easy_localization/easy_localization.dart';

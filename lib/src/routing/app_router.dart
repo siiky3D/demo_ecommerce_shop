@@ -1,10 +1,10 @@
 import 'package:demo_app/src/features/onboarding/data/onboarding_repository.dart';
 import 'package:demo_app/src/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:demo_app/src/features/authentication/data/firebase_auth_repository.dart';
-import 'package:demo_app/src/features/authentication/presentation/email_password_sign_in_form_type.dart';
-import 'package:demo_app/src/features/authentication/presentation/reset_password_screen.dart';
-import 'package:demo_app/src/features/authentication/presentation/sign_in_screen.dart';
-import 'package:demo_app/src/features/authentication/presentation/sign_up_screen.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/email_password_sign_in_form_type.dart';
+import 'package:demo_app/src/features/authentication/presentation/reset_password/reset_password_screen.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/sign_in_screen.dart';
+import 'package:demo_app/src/features/authentication/presentation/sign_in/sign_up_screen.dart';
 import 'package:demo_app/src/features/products/presentation/product_screen/product_screen.dart';
 import 'package:demo_app/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:demo_app/src/routing/go_router_refresh_stream.dart';
@@ -25,6 +25,7 @@ enum AppRoute {
   adminUploadProduct,
   account,
   cart,
+  checkout,
   checkoutAndPayment,
   home,
   leaveReview,
